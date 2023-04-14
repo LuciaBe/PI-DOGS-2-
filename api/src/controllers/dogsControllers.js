@@ -7,6 +7,8 @@ const cleanArray = (arr) =>
    arr.map((elem)=>{
   
     
+
+    
     return{
       id: elem.id,
       name: elem.name,
