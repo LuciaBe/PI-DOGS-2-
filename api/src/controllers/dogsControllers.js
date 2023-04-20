@@ -30,10 +30,10 @@ const cleanArray = (arr) =>
       return { ...rest, temperaments: temperamentString };
     });
   }
-  
+  //    const apiDogsRaw = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data
   const getAllDogs = async () => {
     const dbDogsRaw = await Dogs.findAll({include: {model: Temperaments, attributes: ['name'],  through: { attributes: [] }}});
-    const apiDogsRaw = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data
+    const apiDogsRaw = (await axios.get(`https://api.thedogapi.com/v1/breeds`)).data
   
     const apiDogs = cleanArray(apiDogsRaw);
     const dbDogs = transformedDogs(dbDogsRaw);
@@ -51,8 +51,8 @@ const searchDogByName = async (name) => {
       through: { attributes: [] },
     },
   });
-
-  const apiDogsRaw = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data;
+//  const apiDogsRaw = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data;
+  const apiDogsRaw = (await axios.get(`https://api.thedogapi.com/v1/breeds`)).data;
   
   const apiDogs = apiDogsRaw.filter((dog) => dog.name.toLowerCase().includes(name.toLowerCase())).map((dog) => ({
     id: dog.id,

@@ -19,7 +19,8 @@ const Form = () => {
         weight_max:'',
         life_span:'',
         image:'',
-        temperamentId: []
+        temperamentId: [],
+        tempName: []
     })
 
     const [errors,setErrors] = useState({
@@ -65,9 +66,21 @@ const Form = () => {
             });
           }
           const selectHandler = event=> {
-            setForm({...form, temperamentId:[...form.temperamentId, event.target.value]})         
+            const id = event.target.value;
+            const selectedTemp = temperaments.find(t=> t.id == id)
+            setForm({...form, temperamentId:[...form.temperamentId, id], tempName:[...form.tempName, selectedTemp?.name]})    
+         
+           console.log(form.tempName);
           };
           
+          const deleteTemp = (index)=>{
+           const temperamentIdClean = [...form.temperamentId]
+           const tempNameClean = [...form.tempName]
+           tempNameClean.splice(index, 1);
+           temperamentIdClean.splice(index, 1);
+            setForm({...form, temperamentId:[temperamentIdClean], tempName:[tempNameClean]})
+            console.log(tempNameClean, temperamentIdClean);
+          }
 
     const validate = (form) => {
         let nameRegex = /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/;
@@ -94,6 +107,7 @@ const Form = () => {
          }
       
         if (form.height_min.trim() && isNaN(form.height_min.trim()) || Number(form.height_min.trim()) > 100) {
+          
           errors.height_min = " - Height minimum should be a number less than 100";
         }
       
@@ -134,43 +148,51 @@ const Form = () => {
             <div className={style.box}>
                 <label className={style.label}>Name: </label>             
              <input className={style.input} type='text' name='name' value={form.name} onChange={changeHandler}></input>
-                {errors.name && <span style={{color:'red'}}>{errors.name}</span>}
-              </div>  
-            
+             </div>  
+              {errors.name && <span style={{color:'red'}}>{errors.name}</span>}
+             
+             
             <div>
                 <label>Height Min: </label>
                 <input type='text' name='height_min' value={form.height_min} onChange={changeHandler}></input>
                 <span> Cm.</span>
+                </div>
+
                 {errors.height_min && <span style={{color:'red'}}>{errors.height_min}</span>}
 
-            </div>
+           
             <div>
                 <label>Height Max: </label>
                 <input type='text' name='height_max' value={form.height_max} onChange={changeHandler}></input>
                 <span> Cm.</span>
+
+              </div>
                 {errors.height_max && <span style={{color:'red'}}>{errors.height_max}</span>}
 
-            </div>
+           
             <div>
                 <label>Weight Min: </label>
                 <input type='text' name='weight_min' value={form.weight_min} onChange={changeHandler}></input>
                 <span> Kgs.</span>
+                </div>
                 {errors.weight_min && <span style={{color:'red'}}>{errors.weight_min}</span>}
 
-            </div>
+           
             <div>
                 <label>Weight Max: </label>
                 <input type='text' name='weight_max' value={form.weight_max} onChange={changeHandler}></input>
                 <span> Kgs.</span>
+                </div>
                 {errors.weight_max && <span style={{color:'red'}}>{errors.weight_max}</span>}
 
-            </div>
+            
             <div>
                 <label>Life Span: </label>
                 <input type='text' name='life_span' value={form.life_span} onChange={changeHandler}></input>
+                </div>
                 {errors.life_span && <span style={{color:'red'}}>{errors.life_span}</span>}
 
-            </div>
+           
             <div>
                 <label>Image: </label>
                 <input type='text' name='image' value={form.image} onChange={changeHandler}></input>
@@ -184,6 +206,8 @@ const Form = () => {
                       <option key={temp.id} value={temp.id}>{temp.name}</option>)                      
                   })}                
                 </select>
+              
+               
            
                 
             </div>
@@ -194,3 +218,13 @@ const Form = () => {
 }
 
 export default Form;
+/*  <ul>
+                 {form.tempName?.map((name, index)=>{
+                  return(
+                    <li key= {index}>{name}
+                    <button onClick={deleteTemp(index)}>X</button>
+                    </li>
+                  )
+                 })}
+                 
+                </ul>*/
